@@ -4,12 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.PreUpdate;
-import javax.persistence.TemporalType;
-
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.jpa.repository.Temporal;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
@@ -59,7 +55,7 @@ public class User {
         this.name = name;
     }
 
-    public String setEmail() {
+    public String getEmail() {
         return email;
     }
 
@@ -80,7 +76,7 @@ public class User {
 
     }
 
-    public void setDate(Date dateOfBirth) {
+    public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

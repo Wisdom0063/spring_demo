@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
 import com.example.demo.model.User;
+import com.example.demo.controller.v1.request.user.AddUserRequest;
 
 import java.util.Optional;
 
@@ -23,8 +24,14 @@ public class UserController {
     private UserRepository userRepository;
 
     @PostMapping() // Map ONLY POST Requests
-    public User addNewUser(@Valid @RequestBody User user) {
+    public User addNewUser(@Valid @RequestBody AddUserRequest userRequest) {
         // @ResponseBody means the returned String is the response, not a view name
+
+        User user = new User();
+        user.setName(userRequest.getName());
+        user.setEmail(userRequest.getEmail());
+        user.setAge(userRequest.getAge());
+        user.setDateOfBirth(userRequest.getDateOfBirth());
         return userRepository.save(user);
     }
 
