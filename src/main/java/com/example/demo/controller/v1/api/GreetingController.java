@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.demo.controller.v1.api;
 
 import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.web.bind.annotation.GetMapping;
