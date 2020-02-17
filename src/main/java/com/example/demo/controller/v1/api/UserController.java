@@ -7,16 +7,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
+
+import com.example.demo.model.mail.Mail;
 import com.example.demo.model.user.User;
 import com.auth0.jwt.JWT;
 import com.example.demo.controller.v1.request.user.AddUserRequest;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import javax.validation.Valid;
 import com.example.demo.dao.UserRepository;
 import com.example.demo.dto.model.user.UserDto;
 import com.example.demo.dto.response.Response;
+import com.example.demo.service.MailService;
 import com.example.demo.service.UserService;
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
@@ -31,6 +36,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private MailService mailService;
+
     @PostMapping() // Map ONLY POST Requests
     public Response<Object> addNewUser(@RequestBody @Valid AddUserRequest userRequest) {
         User user = new User().setName(userRequest.getName()).setEmail(userRequest.getEmail())
@@ -41,6 +49,19 @@ public class UserController {
                 .withExpiresAt(new Date(System.currentTimeMillis() + (10 * 24 * 60 * 60000)))
                 .sign(HMAC512("SomeSecretForJWTGeneration"));
         UserDto userData = userService.signup(user).setToken(token);
+
+        Mail mail = new Mail();
+        mail.setMailFrom("kwartengwisdomug95@gmail.com");
+        mail.setMailTo("kwartengwisdomug95@gmail.com");
+        mail.setMailSubject("Spring 4 - Email with FreeMarker template");
+ 
+        Map < String, Object > model = new HashMap < String, Object > ();
+        model.put("firstName", "Wisdom");
+        model.put("lastName", "Kwarteng");
+        model.put("location", "Accra, Ghana");
+        model.put("signature", "www.eightd.co");
+        mail.setModel(model);
+        mailService.sendEmail(mail);
 
         return Response.ok().setPayload(userData);
     }
